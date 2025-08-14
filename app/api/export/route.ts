@@ -2,15 +2,17 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '../../../lib/db';
 import { transactions } from '../../../drizzle/schema';
 import { auth } from '@clerk/nextjs/server';
-// Using pdf-lib for PDF generation (no external font files needed)
-// pdf-lib CommonJS interop handling
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const pdfLib = require('pdf-lib');
-const { PDFDocument, StandardFonts, rgb } = pdfLib;
-import { eq } from 'drizzle-orm';
+// Using pdf-lib for PDF generation (ESM/dynamic import to satisfy lint rules)
 import { createObjectCsvStringifier } from 'csv-writer';
+import { eq } from 'drizzle-orm';
 import type { Transaction } from '../../../drizzle/schema';
 export const runtime = 'nodejs';
+
+// Lazy PDF import so that build tools/tree-shaking work and avoids require()
+async function getPdfLib() {
+  const pdfLib = await import('pdf-lib');
+  return pdfLib;
+}
 
 export async function POST(req: NextRequest) {
   const { userId } = auth();
@@ -42,6 +44,7 @@ export async function POST(req: NextRequest) {
   }
 
   if (format === 'pdf') {
+    const { PDFDocument, StandardFonts, rgb } = await getPdfLib();
     const pdfDoc = await PDFDocument.create();
     const page = pdfDoc.addPage();
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
