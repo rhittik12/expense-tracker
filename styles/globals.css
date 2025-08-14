@@ -1,0 +1,92 @@
+/* Tailwind layers */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Vibrant light palette */
+  --background: 210 40% 98%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+  --primary: 256 84% 55%; /* violet */
+  --primary-foreground: 0 0% 100%;
+  --secondary: 199 89% 48%; /* cyan */
+  --secondary-foreground: 210 40% 98%;
+  --muted: 218 24% 92%;
+  --muted-foreground: 220 10% 40%;
+  --accent: 43 96% 56%; /* amber */
+  --accent-foreground: 222 47% 11%;
+  --destructive: 350 85% 55%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 220 16% 86%;
+  --input: 220 16% 86%;
+  --ring: 256 84% 55%;
+  --radius: 0.75rem;
+  --gradient-start: 256 84% 60%;
+  --gradient-mid: 199 89% 60%;
+  --gradient-end: 43 96% 60%;
+}
+
+.dark {
+  /* Deep neon dark palette */
+  --background: 222 47% 7%;
+  --foreground: 210 40% 98%;
+  --card: 222 47% 9%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222 47% 9%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 271 91% 65%; /* fuchsia glow */
+  --primary-foreground: 256 100% 12%;
+  --secondary: 190 95% 65%;
+  --secondary-foreground: 222 47% 10%;
+  --muted: 222 35% 18%;
+  --muted-foreground: 215 20% 70%;
+  --accent: 36 98% 60%;
+  --accent-foreground: 222 47% 10%;
+  --destructive: 350 86% 60%;
+  --destructive-foreground: 222 47% 10%;
+  --border: 222 35% 24%;
+  --input: 222 35% 24%;
+  --ring: 271 91% 65%;
+  --gradient-start: 271 91% 60%;
+  --gradient-mid: 190 95% 52%;
+  --gradient-end: 36 98% 55%;
+}
+
+html, body, :root { height: 100%; }
+body { @apply bg-background text-foreground antialiased; background-image: radial-gradient(circle at 20% 20%, hsl(var(--gradient-start)/0.25), transparent 60%), radial-gradient(circle at 80% 30%, hsl(var(--gradient-mid)/0.25), transparent 60%), radial-gradient(circle at 50% 80%, hsl(var(--gradient-end)/0.25), transparent 70%); background-attachment: fixed; }
+
+/* Glass & utility styles */
+.glass { @apply bg-white/60 dark:bg-white/5 backdrop-blur-md border border-white/40 dark:border-white/10 shadow-lg shadow-black/5 dark:shadow-black/40; }
+.btn { @apply inline-flex items-center justify-center rounded-md font-medium text-sm px-3 py-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50 disabled:pointer-events-none; }
+.btn-primary { @apply btn bg-primary text-primary-foreground hover:brightness-110; }
+.btn-outline { @apply btn border border-border bg-background/60 hover:bg-muted; }
+.btn-ghost { @apply btn hover:bg-muted/50; }
+
+/* Card gradient variants */
+.stat-gradient-income { background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%); }
+.stat-gradient-expense { background: linear-gradient(135deg, hsl(var(--destructive)) 0%, hsl(var(--accent)) 100%); }
+.stat-gradient-net { background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--primary)) 100%); }
+
+/* Smooth fade/scale */
+@keyframes fadeInUp { from { opacity:0; transform: translateY(8px);} to { opacity:1; transform: translateY(0);} }
+.animate-fadeInUp { animation: fadeInUp .5s ease both; }
+
+/* Budget pulse when exceeded */
+@keyframes budgetPulse { 0%,100%{ filter:brightness(1);} 50%{ filter:brightness(1.35);} }
+.budget-over { animation: budgetPulse 1.2s ease-in-out infinite; }
+
+/* Alternate palette themes (attach to body data-theme attribute) */
+body[data-theme='sunset'] { --gradient-start: 10 90% 60%; --gradient-mid: 310 75% 55%; --gradient-end: 43 96% 60%; --primary: 10 90% 60%; --secondary: 310 75% 55%; --accent: 43 96% 56%; }
+body[data-theme='forest'] { --gradient-start: 160 100% 25%; --gradient-mid: 140 60% 40%; --gradient-end: 43 96% 50%; --primary: 160 100% 30%; --secondary: 140 45% 35%; --accent: 43 96% 50%; }
+body[data-theme='ocean'] { --gradient-start: 199 89% 48%; --gradient-mid: 210 80% 55%; --gradient-end: 271 91% 65%; --primary: 199 89% 48%; --secondary: 210 80% 55%; --accent: 271 91% 65%; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+/* Accessible focus ring */
+*:focus-visible { outline: 2px solid hsl(var(--ring)); outline-offset: 2px; }
