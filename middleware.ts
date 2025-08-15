@@ -3,6 +3,7 @@ import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 // Private deployment: only authenticated & allow‑listed users (by email domain or exact) may access app.
 // Adjust ALLOW_EMAILS / ALLOW_DOMAIN via env (NEXT_PUBLIC_ALLOW_EMAILS / NEXT_PUBLIC_ALLOW_DOMAIN) if desired.
 const isPublicRoute = createRouteMatcher([
+  '/',
   '/sign-in(.*)',
   '/sign-up(.*)',
   '/api/health'
